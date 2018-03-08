@@ -73,8 +73,7 @@ void _testChange(
     var request = factory(headers: {'test': 'test value'});
     var copy = request.change(headers: {'test2': 'test2 value'});
 
-    expect(copy.headers,
-        {'test': 'test value', 'test2': 'test2 value'});
+    expect(copy.headers, {'test': 'test value', 'test2': 'test2 value'});
   });
 
   test('existing header values are overwritten', () {
