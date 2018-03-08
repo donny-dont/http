@@ -150,12 +150,6 @@ abstract class Message {
   Message change(
       {Map<String, String> headers, Map<String, Object> context, body});
 
-  /// The default set of headers for a message created with no body and no
-  /// explicit headers.
-  static final _defaultHeaders = new HttpUnmodifiableMap<String>(
-      {'content-length': '0'},
-      ignoreKeyCase: true);
-
   /// Adds information about encoding and content-type to [headers].
   ///
   /// Returns a new map without modifying [headers].
@@ -164,12 +158,8 @@ abstract class Message {
     var contentType = _contentTypeHeader(headers, body);
     var contentLength = _contentLengthHeader(headers, body);
 
-    if (contentType == null) {
-      if (contentLength == null) {
-        return headers ?? const HttpUnmodifiableMap.empty();
-      } else if (contentLength == '0' && (headers == null || headers.isEmpty)) {
-        return _defaultHeaders;
-      }
+    if (contentType == null && contentLength == null) {
+      return headers ?? const HttpUnmodifiableMap.empty();
     }
 
     var newHeaders = headers == null
@@ -193,7 +183,7 @@ abstract class Message {
   /// modified, otherwise it returns `null`.
   static String _contentLengthHeader(Map<String, String> headers, Body body) {
     var bodyLength = body.contentLength;
-    if (bodyLength == null) return null;
+    if (bodyLength == null || bodyLength == 0) return null;
 
     var contentLengthHeader = bodyLength.toString();
     if (contentLengthHeader == getHeader(headers, 'content-length'))

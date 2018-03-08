@@ -381,7 +381,6 @@ void main() {
             'method': 'DELETE',
             'path': '',
             'headers': {
-              'content-length': '0',
               'user-agent': userAgent(),
               'x-random-header': 'Value',
               'x-other-header': 'Other Value'
